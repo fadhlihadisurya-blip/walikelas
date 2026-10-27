@@ -1,0 +1,89 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isBootstrappedAdmin() {
+      return isSignedIn() && request.auth.token.email == 'Fadhlihadisurya@gmail.com';
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Users
+    match /users/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isBootstrappedAdmin());
+      allow create, update: if isSignedIn() && (request.auth.uid == userId || isBootstrappedAdmin());
+      allow delete: if isBootstrappedAdmin();
+    }
+
+    // Students
+    match /students/{studentId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(studentId);
+      allow delete: if isSignedIn() && isBootstrappedAdmin();
+    }
+
+    // Daily Journal Observations
+    match /observations/{obsId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(obsId);
+      allow delete: if isSignedIn();
+    }
+
+    // Assessments (Weekly, Monthly, Semester)
+    match /assessments/{assessmentId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(assessmentId);
+      allow delete: if isSignedIn();
+    }
+
+    // Interventions (Pembinaan Siswa)
+    match /interventions/{interventionId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(interventionId);
+      allow delete: if isSignedIn();
+    }
+
+    // Strengths, Potentials, Achievements
+    match /strengths/{strengthId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(strengthId);
+      allow delete: if isSignedIn();
+    }
+
+    // Parent Contacts
+    match /parentContacts/{contactId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(contactId);
+      allow delete: if isSignedIn();
+    }
+
+    // Settings
+    match /settings/{settingId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(settingId);
+      allow delete: if isBootstrappedAdmin();
+    }
+
+    // Audit Logs
+    match /auditLogs/{logId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(logId);
+      allow update, delete: if false; // Append-only audit
+    }
+  }
+}

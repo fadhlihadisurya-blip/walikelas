@@ -1,0 +1,265 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role-based access for JPIS system",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["admin", "wali_kelas", "pembina_asrama"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "email", "displayName", "role"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "Student profile at Islamic Boarding School",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "nis": { "type": "string", "maxLength": 32 },
+        "fullName": { "type": "string", "maxLength": 128 },
+        "nickname": { "type": "string", "maxLength": 64 },
+        "gender": { "type": "string", "enum": ["L", "P"] },
+        "className": { "type": "string", "maxLength": 64 },
+        "academicYear": { "type": "string", "maxLength": 32 },
+        "status": { "type": "string", "enum": ["aktif", "nonaktif", "alumni", "mutasi"] },
+        "dormitoryRoom": { "type": "string", "maxLength": 64 },
+        "interestsAndTalents": { "type": "string", "maxLength": 1000 },
+        "academicPotential": { "type": "string", "maxLength": 1000 },
+        "nonAcademicPotential": { "type": "string", "maxLength": 1000 },
+        "parentName": { "type": "string", "maxLength": 128 },
+        "parentPhone": { "type": "string", "maxLength": 32 },
+        "waliKelasId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "nis", "fullName", "className", "academicYear", "status"]
+    },
+    "Observation": {
+      "title": "Observation",
+      "description": "Daily journal observation of student behavior and progress",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "studentId": { "type": "string", "maxLength": 128 },
+        "studentName": { "type": "string", "maxLength": 128 },
+        "dateTime": { "type": "string", "maxLength": 64 },
+        "aspect": {
+          "type": "string",
+          "enum": [
+            "Akademik",
+            "Ibadah",
+            "Karakter dan Adab Islami",
+            "Kedisiplinan",
+            "Kemandirian",
+            "Sosial dan Emosional",
+            "Minat, Bakat, dan Potensi",
+            "Prestasi",
+            "Kebutuhan Pembinaan"
+          ]
+        },
+        "category": {
+          "type": "string",
+          "enum": ["Catatan Positif", "Pencapaian", "Kejadian Penting", "Kebutuhan Pendampingan"]
+        },
+        "indicator": { "type": "string", "maxLength": 256 },
+        "observedBehavior": { "type": "string", "maxLength": 2000 },
+        "context": { "type": "string", "maxLength": 1000 },
+        "evidenceOrSource": { "type": "string", "maxLength": 1000 },
+        "relevantImpact": { "type": "string", "maxLength": 1000 },
+        "teacherAction": { "type": "string", "maxLength": 1000 },
+        "initialResult": { "type": "string", "maxLength": 1000 },
+        "followUpPlan": { "type": "string", "maxLength": 1000 },
+        "nextEvaluationDate": { "type": "string", "maxLength": 64 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "studentId", "dateTime", "aspect", "category", "observedBehavior", "authorId"]
+    },
+    "Assessment": {
+      "title": "Assessment",
+      "description": "Weekly summary or Monthly evaluation record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "studentId": { "type": "string", "maxLength": 128 },
+        "type": { "type": "string", "enum": ["weekly", "monthly", "semester"] },
+        "period": { "type": "string", "maxLength": 64 },
+        "academicYear": { "type": "string", "maxLength": 32 },
+        "semester": { "type": "string", "enum": ["Ganjil", "Genap"] },
+        "month": { "type": "string", "maxLength": 32 },
+        "weekNumber": { "type": "number" },
+        "positiveDevelopments": { "type": "string", "maxLength": 2500 },
+        "visibleProgress": { "type": "string", "maxLength": 2500 },
+        "challenges": { "type": "string", "maxLength": 2500 },
+        "supportingEvidence": { "type": "string", "maxLength": 2500 },
+        "previousComparison": { "type": "string", "maxLength": 2500 },
+        "nextTargets": { "type": "string", "maxLength": 2500 },
+        "interventionPlan": { "type": "string", "maxLength": 2500 },
+        "isAiAssisted": { "type": "boolean" },
+        "ratings": { "type": "string", "maxLength": 5000 },
+        "evaluatorId": { "type": "string", "maxLength": 128 },
+        "evaluatorName": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "studentId", "type", "period", "evaluatorId"]
+    },
+    "Intervention": {
+      "title": "Intervention",
+      "description": "Student coaching and guidance module",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "studentId": { "type": "string", "maxLength": 128 },
+        "studentName": { "type": "string", "maxLength": 128 },
+        "identifiedNeed": { "type": "string", "maxLength": 1500 },
+        "initialConditionAndEvidence": { "type": "string", "maxLength": 1500 },
+        "studentStrengths": { "type": "string", "maxLength": 1500 },
+        "specificTarget": { "type": "string", "maxLength": 1500 },
+        "coachingStrategy": { "type": "string", "maxLength": 1500 },
+        "targetSchedule": { "type": "string", "maxLength": 64 },
+        "personInCharge": { "type": "string", "maxLength": 128 },
+        "successIndicator": { "type": "string", "maxLength": 1500 },
+        "evaluationResult": { "type": "string", "maxLength": 1500 },
+        "status": {
+          "type": "string",
+          "enum": ["Direncanakan", "Berjalan", "Tercapai", "Perlu Penyesuaian", "Ditutup"]
+        },
+        "nextFollowUp": { "type": "string", "maxLength": 1000 },
+        "dueDate": { "type": "string", "maxLength": 64 },
+        "coachId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "studentId", "identifiedNeed", "specificTarget", "status", "coachId"]
+    },
+    "Strength": {
+      "title": "Strength",
+      "description": "Student talents, achievements, creativity, and leadership records",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "studentId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 256 },
+        "category": {
+          "type": "string",
+          "enum": ["Minat & Bakat", "Karya", "Prestasi", "Kreativitas", "Kepemimpinan", "Kemampuan Khusus", "Bidang Pengembangan"]
+        },
+        "level": { "type": "string", "maxLength": 64 },
+        "year": { "type": "string", "maxLength": 32 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "evidence": { "type": "string", "maxLength": 1000 },
+        "recommendedDevelopment": { "type": "string", "maxLength": 1500 },
+        "recorderId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "studentId", "title", "category", "recorderId"]
+    },
+    "ParentContact": {
+      "title": "ParentContact",
+      "description": "Parent-teacher communication log and agreements",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "studentId": { "type": "string", "maxLength": 128 },
+        "studentName": { "type": "string", "maxLength": 128 },
+        "contactDate": { "type": "string", "maxLength": 64 },
+        "media": { "type": "string", "enum": ["Tatap Muka", "Telepon", "WhatsApp", "Zoom/Meet", "Surat Resmi"] },
+        "mainDiscussion": { "type": "string", "maxLength": 2000 },
+        "positiveDevelopments": { "type": "string", "maxLength": 1500 },
+        "pointsToNote": { "type": "string", "maxLength": 1500 },
+        "schoolParentAgreement": { "type": "string", "maxLength": 2000 },
+        "personInCharge": { "type": "string", "maxLength": 128 },
+        "evaluationSchedule": { "type": "string", "maxLength": 64 },
+        "followUpStatus": { "type": "string", "enum": ["Menunggu Tindak Lanjut", "Dalam Proses", "Selesai", "Perlu Pertemuan Lanjutan"] },
+        "approvedByWaliKelas": { "type": "boolean" },
+        "waliKelasId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "studentId", "contactDate", "media", "mainDiscussion", "waliKelasId"]
+    },
+    "Setting": {
+      "title": "Setting",
+      "description": "School and homeroom configuration",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "schoolName": { "type": "string", "maxLength": 256 },
+        "schoolLogo": { "type": "string", "maxLength": 512 },
+        "waliKelasName": { "type": "string", "maxLength": 128 },
+        "nip": { "type": "string", "maxLength": 64 },
+        "className": { "type": "string", "maxLength": 64 },
+        "academicYear": { "type": "string", "maxLength": 32 },
+        "semester": { "type": "string", "enum": ["Ganjil", "Genap"] },
+        "headmasterName": { "type": "string", "maxLength": 128 },
+        "boardingName": { "type": "string", "maxLength": 256 },
+        "updatedAt": { "type": "string" },
+        "updatedBy": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["id", "schoolName", "waliKelasName", "className", "academicYear", "semester"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Log of actions and important events in the system",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "action": { "type": "string", "maxLength": 128 },
+        "targetEntity": { "type": "string", "maxLength": 64 },
+        "targetId": { "type": "string", "maxLength": 128 },
+        "details": { "type": "string", "maxLength": 2000 },
+        "performedBy": { "type": "string", "maxLength": 128 },
+        "performedByName": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "action", "targetEntity", "performedBy", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile with role"
+    },
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Student roster and profile details"
+    },
+    "/observations/{observationId}": {
+      "schema": "Observation",
+      "description": "Daily journal records"
+    },
+    "/assessments/{assessmentId}": {
+      "schema": "Assessment",
+      "description": "Weekly and monthly evaluation reviews"
+    },
+    "/interventions/{interventionId}": {
+      "schema": "Intervention",
+      "description": "Student coaching targets and strategies"
+    },
+    "/strengths/{strengthId}": {
+      "schema": "Strength",
+      "description": "Student strengths, achievements, and potentials"
+    },
+    "/parentContacts/{contactId}": {
+      "schema": "ParentContact",
+      "description": "Parent communication records"
+    },
+    "/settings/{settingId}": {
+      "schema": "Setting",
+      "description": "School and class parameters"
+    },
+    "/auditLogs/{logId}": {
+      "schema": "AuditLog",
+      "description": "Audit trail of changes"
+    }
+  }
+}
